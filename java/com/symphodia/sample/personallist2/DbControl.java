@@ -51,7 +51,6 @@ public class DbControl {
         }
     }
 
-    //TODO:How delete a company table record.
     public boolean delete(long id){
         SQLiteDatabase database = mHelper.getWritableDatabase();
         return database.delete(PersonTable.TABLE_PERSON, PersonTable.COLUMN_ID + "=" + id, null) > 0;
