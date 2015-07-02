@@ -7,10 +7,16 @@ public class CompanyTable {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_COMPANY_NAME = "company_name";
 
-    private static final String STATEMENT_CREATE_DATABASE = "create table "
+//    private static final String STATEMENT_CREATE_DATABASE = "create table "
+//            + TABLE_COMPANY
+//            + "("
+//            + COLUMN_ID + " integer primary key autoincrement, "
+//            + COLUMN_COMPANY_NAME + " text not null"
+//            + ");";
+        private static final String STATEMENT_CREATE_DATABASE = "create table "
             + TABLE_COMPANY
             + "("
-            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_ID + " integer primary key, "
             + COLUMN_COMPANY_NAME + " text not null"
             + ");";
 

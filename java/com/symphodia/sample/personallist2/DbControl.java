@@ -32,10 +32,23 @@ public class DbControl {
 
     //Use to insert to company table.
     private long insertCompany(SQLiteDatabase database, String company) {
-        ContentValues values = new ContentValues();
-        values.put(CompanyTable.COLUMN_COMPANY_NAME, company);
-        Log.d("Inserted to Company", values.get(CompanyTable.COLUMN_COMPANY_NAME).toString());
-        return database.insert(CompanyTable.TABLE_COMPANY, null, values);
+//        ContentValues values = new ContentValues();
+//        values.put(CompanyTable.COLUMN_COMPANY_NAME, company);
+//        Log.d("Inserted to Company", values.get(CompanyTable.COLUMN_COMPANY_NAME).toString());
+//        return database.insert(CompanyTable.TABLE_COMPANY, null, values);
+        Cursor cursor = fetchSelectedCompanyBy(company);
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+            return cursor.getInt(cursor.getColumnIndexOrThrow(CompanyTable.COLUMN_ID));
+        }else{
+            cursor = fetchAllCompanies();
+            int id = cursor.getCount() + 1;
+            ContentValues values = new ContentValues();
+            values.put(CompanyTable.COLUMN_ID, id);
+            values.put(CompanyTable.COLUMN_COMPANY_NAME, company);
+            Log.d("Inserted to Company", values.get(CompanyTable.COLUMN_COMPANY_NAME).toString());
+            return database.insert(CompanyTable.TABLE_COMPANY, null, values);
+        }
     }
 
     //TODO:How delete a company table record.
@@ -58,6 +71,15 @@ public class DbControl {
         Cursor cursor = database.query(CompanyTable.TABLE_COMPANY, new String[]{CompanyTable.COLUMN_ID, CompanyTable.COLUMN_COMPANY_NAME},
                 CompanyTable.COLUMN_ID + " == ?",
                 new String[]{String.valueOf(companyId)},
+                null, null, null);
+        return cursor;
+    }
+
+    private Cursor fetchSelectedCompanyBy(String companyName){
+        SQLiteDatabase database = mHelper.getWritableDatabase();
+        Cursor cursor = database.query(CompanyTable.TABLE_COMPANY, new String[]{CompanyTable.COLUMN_ID, CompanyTable.COLUMN_COMPANY_NAME},
+                CompanyTable.COLUMN_COMPANY_NAME + " == ?",
+                new String[]{companyName},
                 null, null, null);
         return cursor;
     }
